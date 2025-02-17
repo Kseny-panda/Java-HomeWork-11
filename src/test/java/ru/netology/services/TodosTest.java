@@ -126,11 +126,20 @@ class TodosTest {
 
     // Проверка отсутствия при поиске по задачам
     @Test
-    public void shouldNotSearch() {
+    public void shouldNotSearchTask() {
         setup();
 
         Task[] expected = {};
         Assertions.assertArrayEquals(expected, todos.search("яблоко"));
+    }
+
+    //Одно совпадение по задачам
+    @Test
+    public void shouldOneSearchTask() {
+        setup();
+
+        Task[] expected = {simpleTask3};
+        Assertions.assertArrayEquals(expected, todos.search("счет"));
     }
 
     // Проверка поиска при вводе на английском
