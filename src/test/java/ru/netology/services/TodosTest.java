@@ -35,6 +35,13 @@ class TodosTest {
             "До четверга"
     );
 
+    Meeting meeting3 = new Meeting(
+            833,
+            "Подготовка к собеседованию по вакансии",
+            "написать сопроводительное письмо",
+            "До вечера пятницы"
+    );
+
     //@BeforeEach
     public void setup() {
         todos.add(simpleTask1);
@@ -45,6 +52,7 @@ class TodosTest {
         todos.add(films);
         todos.add(meeting1);
         todos.add(meeting2);
+        todos.add(meeting3);
     }
 
     // Пустой массив
@@ -58,7 +66,7 @@ class TodosTest {
     @Test
     public void shouldAddThreeTasksOfDifferentType() {
         setup();
-        Task[] expected = {simpleTask1, simpleTask2, simpleTask3, products, lessons, films, meeting1, meeting2};
+        Task[] expected = {simpleTask1, simpleTask2, simpleTask3, products, lessons, films, meeting1, meeting2, meeting3};
         Assertions.assertArrayEquals(expected, todos.findAll());
     }
 
@@ -66,7 +74,6 @@ class TodosTest {
     @Test
     public void shouldFindWordInSimpleTask() {
         setup();
-        todos.search("Написать");
 
         Task[] expected = {simpleTask2};
         Assertions.assertArrayEquals(expected, todos.search("Написать"));
@@ -76,7 +83,6 @@ class TodosTest {
     @Test
     public void shouldFindWordInEpic() {
         setup();
-        todos.search("Литература");
 
         Task[] expected = {lessons};
         Assertions.assertArrayEquals(expected, todos.search("Литература"));
@@ -86,7 +92,6 @@ class TodosTest {
     @Test
     public void shouldFindWordInMeetingTitle() {
         setup();
-        todos.search("Выкатка");
 
         Task[] expected = {meeting1};
         Assertions.assertArrayEquals(expected, todos.search("Выкатка"));
@@ -96,7 +101,6 @@ class TodosTest {
     @Test
     public void shouldFindWordInMeetingProject() {
         setup();
-        todos.search("дз");
 
         Task[] expected = {meeting2};
         Assertions.assertArrayEquals(expected, todos.search("дз"));
@@ -106,9 +110,8 @@ class TodosTest {
     @Test
     public void shouldMultipleMatches() {
         setup();
-        todos.search("ка");
 
-        Task[] expected = {simpleTask3, lessons, films, meeting1};
+        Task[] expected = {simpleTask3, lessons, films, meeting1, meeting3};
         Assertions.assertArrayEquals(expected, todos.search("ка"));
     }
 
@@ -116,7 +119,6 @@ class TodosTest {
     @Test
     public void CaseSensitivity() {
         setup();
-        todos.search("Банка");
 
         Task[] expected = {meeting1};
         Assertions.assertArrayEquals(expected, todos.search("Банка"));
@@ -126,7 +128,6 @@ class TodosTest {
     @Test
     public void shouldNotSearch() {
         setup();
-        todos.search("яблоко");
 
         Task[] expected = {};
         Assertions.assertArrayEquals(expected, todos.search("яблоко"));
@@ -136,9 +137,18 @@ class TodosTest {
     @Test
     public void shouldSearchEnglish() {
         setup();
-        todos.search("project");
 
         Task[] expected = {meeting2};
         Assertions.assertArrayEquals(expected, todos.search("project"));
+    }
+
+    // Два совпадения по задачам
+    @Test
+    public void shouldTwoSearchTask() {
+        setup();
+
+        Task[] expected = {simpleTask2, meeting3};
+        Task[] actual = todos.search("письмо");
+        Assertions.assertArrayEquals(expected, actual);
     }
 }
